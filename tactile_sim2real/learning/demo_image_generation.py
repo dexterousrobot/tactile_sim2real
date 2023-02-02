@@ -3,6 +3,7 @@ import argparse
 import itertools
 from tactile_learning.pix2pix.image_generator import demo_image_generation
 
+from tactile_sim2real.learning.utils_learning import make_save_dir_str
 from tactile_sim2real import BASE_DATA_PATH
 
 
@@ -17,13 +18,13 @@ if __name__ == '__main__':
     )
     parser.add_argument(
         '-i', '--input_dir',
-        nargs='+',
+        nargs=1,
         help="Choose input directory from ['tactip_331', 'sim_tactip'].",
         default=['tactip_331']
     )
     parser.add_argument(
         '-o', '--target_dir',
-        nargs='+',
+        nargs=1,
         help="Choose target directory from ['tactip_331', 'sim_tactip'].",
         default=['sim_tactip']
     )
@@ -39,6 +40,8 @@ if __name__ == '__main__':
     input_dir = args.input_dir
     target_dir = args.target_dir
     collection_modes = args.collection_modes
+
+    save_dir_str = make_save_dir_str(tasks, input_dir, target_dir, collection_modes)
 
     learning_params = {
         'batch_size':  8,
