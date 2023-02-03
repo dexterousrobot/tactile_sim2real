@@ -6,7 +6,7 @@ from tactile_sim2real.learning.setup_learning import setup_model
 from tactile_sim2real.learning.setup_learning import setup_learning
 
 from tactile_learning.pix2pix.models import create_model
-# from tactile_learning.pix2pix.train_pix2pix import train_pix2pix
+from tactile_learning.pix2pix.train_pix2pix import train_pix2pix
 from tactile_learning.utils.utils_learning import seed_everything, make_dir
 
 from tactile_sim2real.learning.utils_learning import make_save_dir_str
@@ -45,8 +45,14 @@ def launch():
     parser.add_argument(
         '-m', '--models',
         nargs='+',
-        help="Choose model from ['pix2pix_64', 'pix2pix_128', 'pix2pix_256'].",
-        default=['pix2pix_64']
+        help="Choose model from ['pix2pix'].",
+        default=['pix2pix']
+    )
+    parser.add_argument(
+        '-r', '--image_dim',
+        help="Choose input directory from ['64', '128', '128'].",
+        default=64,
+        type=int
     )
     parser.add_argument(
         '-d', '--device',
@@ -62,6 +68,7 @@ def launch():
     collection_modes = args.collection_modes
     models = args.models
     device = args.device
+    image_dim = args.image_dim
 
     # combine the data directories
     input_combined_dirs = list(itertools.product(tasks, input_dir, collection_modes))
@@ -74,7 +81,6 @@ def launch():
         os.path.join(BASE_DATA_PATH, data_path, "train")
         for data_path in input_combined_paths
     ]
-
     target_train_data_dirs = [
         os.path.join(BASE_DATA_PATH, data_path, "train")
         for data_path in target_combined_paths
@@ -83,7 +89,6 @@ def launch():
         os.path.join(BASE_DATA_PATH, data_path, "val")
         for data_path in input_combined_paths
     ]
-
     target_val_data_dirs = [
         os.path.join(BASE_DATA_PATH, data_path, "val")
         for data_path in target_combined_paths
@@ -93,39 +98,42 @@ def launch():
 
     for model_type in models:
 
+        model_name = "_".join([model_type, str(image_dim)])
+
         # setup save dir
         save_dir = os.path.join(
             BASE_MODEL_PATH,
             save_dir_str,
-            model_type
+            model_name
         )
         make_dir(save_dir)
 
         # setup parameters
-        network_params = setup_model(model_type, save_dir)
-        learning_params, image_processing_params, augmentation_params = setup_learning(save_dir)
+        learning_params, image_processing_params, augmentation_params = setup_learning(image_dim, save_dir)
+        network_params = setup_model(model_name, save_dir)
 
         # create the model
         seed_everything(learning_params['seed'])
-        model = create_model(
+        generator, discriminator = create_model(
             image_processing_params['dims'],
             network_params,
             device=device
         )
 
         # # run training
-        # train_pix2pix(
-        #     model,
-        #     input_train_data_dirs,
-        #     target_train_data_dirs,
-        #     input_val_data_dirs,
-        #     target_val_data_dirs,
-        #     learning_params,
-        #     image_processing_params,
-        #     augmentation_params,
-        #     save_dir,
-        #     device=device
-        # )
+        train_pix2pix(
+            generator,
+            discriminator,
+            input_train_data_dirs,
+            target_train_data_dirs,
+            input_val_data_dirs,
+            target_val_data_dirs,
+            learning_params,
+            image_processing_params,
+            augmentation_params,
+            save_dir,
+            device=device
+        )
 
 
 if __name__ == "__main__":

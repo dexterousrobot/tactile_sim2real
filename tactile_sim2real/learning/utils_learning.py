@@ -7,7 +7,7 @@ def make_save_dir_str(tasks, input_dir, target_dir, collection_modes):
     """
 
     return os.path.join(
-        "_".join(tasks),
         "_to_".join([*input_dir, *target_dir]),
+        "_".join(tasks),
         "_".join(collection_modes),
     )

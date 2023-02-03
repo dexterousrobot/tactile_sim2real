@@ -3,7 +3,7 @@ import argparse
 import itertools
 from tactile_learning.pix2pix.image_generator import demo_image_generation
 
-from tactile_sim2real.learning.utils_learning import make_save_dir_str
+from tactile_sim2real.learning.setup_learning import setup_learning
 from tactile_sim2real import BASE_DATA_PATH
 
 
@@ -34,36 +34,21 @@ if __name__ == '__main__':
         help="Choose task from ['tap', 'shear'].",
         default=['tap']
     )
+    parser.add_argument(
+        '-r', '--image_dim',
+        help="Choose input directory from ['64', '128', '128'].",
+        default=64,
+        type=int
+    )
 
     args = parser.parse_args()
     tasks = args.tasks
     input_dir = args.input_dir
     target_dir = args.target_dir
     collection_modes = args.collection_modes
+    image_dim = args.image_dim
 
-    save_dir_str = make_save_dir_str(tasks, input_dir, target_dir, collection_modes)
-
-    learning_params = {
-        'batch_size':  8,
-        'shuffle': True,
-        'n_cpu': 1,
-    }
-
-    image_processing_params = {
-        'dims': (128, 128),
-        'bbox': None,
-        'thresh': None,
-        'stdiz': False,
-        'normlz': True,
-    }
-
-    augmentation_params = {
-        'rshift':  None,  # (0.015, 0.015),
-        'rzoom':   None,
-        'brightlims': None,
-        'noise_var': None,
-        "joint_aug": True,
-    }
+    learning_params, image_processing_params, augmentation_params = setup_learning(image_dim)
 
     # combine the data directories
     input_combined_dirs = list(itertools.product(tasks, input_dir, collection_modes))
