@@ -1,57 +1,7 @@
 import os
-import argparse
+import shutil
 
 from tactile_learning.utils.utils_learning import save_json_obj
-
-
-def setup_parse_args(
-    tasks=['edge_2d'],
-    input_dir=['ur_tactip'],
-    target_dir=['sim_tactip'],
-    version=['tap'],
-    models=['pix2pix_128'],
-    device='cuda'
-):
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-t', '--tasks',
-        nargs='+',
-        help="Choose task from ['edge_2d', 'surface_3d', 'spherical_probe'].",
-        default=tasks
-    )
-    parser.add_argument(
-        '-i', '--input_dir',
-        nargs='+',
-        help="Choose input directory from ['ur_tactip', 'sim_tactip'].",
-        default=input_dir
-    )
-    parser.add_argument(
-        '-o', '--output_dir',
-        nargs='+',
-        help="Choose output directory from ['ur_tactip', 'sim_tactip'].",
-        default=target_dir
-    )
-    parser.add_argument(
-        '-v', '--version',
-        type=str,
-        help="Choose version from ['tap', 'shear].",
-        default=version
-    )
-    parser.add_argument(
-        '-m', '--models',
-        nargs='+',
-        help="Choose model from ['pix2pix'].",
-        default=models
-    )
-    parser.add_argument(
-        '-d', '--device',
-        type=str,
-        help="Choose device from ['cpu', 'cuda'].",
-        default=device
-    )
-    # parse arguments
-    args = parser.parse_args()
-    return args.tasks, args.input_dir, args.output_dir, args.version, args.models, args.device
 
 
 def setup_learning(save_dir=None):
@@ -60,7 +10,7 @@ def setup_learning(save_dir=None):
     learning_params = {
         'seed': 42,
         'batch_size': 32,
-        'epochs': 20,
+        'epochs': 100,
         'n_val_batches': 10,
         'lr': 2e-4,
         'lr_factor': 0.5,
@@ -164,3 +114,21 @@ def setup_model(model_type, save_dir):
     save_json_obj(model_params, os.path.join(save_dir, 'model_params'))
 
     return model_params
+
+
+def setup_training(model_type, data_dirs, save_dir=None):
+    learning_params, preproc_params = setup_learning(save_dir)
+    model_params = setup_model(model_type, save_dir)
+
+    # retain data parameters
+    if save_dir:
+        shutil.copy(os.path.join(data_dirs[0], 'collect_params.json'), save_dir)
+        shutil.copy(os.path.join(data_dirs[0], 'env_params.json'), save_dir)
+        shutil.copy(os.path.join(data_dirs[0], 'sensor_params.json'), save_dir)
+
+        # if there is sensor process params, overwrite
+        sensor_proc_params_file = os.path.join(data_dirs[0], 'sensor_process_params.json')
+        if os.path.isfile(sensor_proc_params_file):
+            shutil.copyfile(sensor_proc_params_file, os.path.join(save_dir, 'sensor_params.json'))
+
+    return learning_params, model_params, preproc_params
