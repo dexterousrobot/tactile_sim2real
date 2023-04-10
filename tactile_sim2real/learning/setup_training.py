@@ -1,60 +1,10 @@
 import os
-import argparse
+import shutil
 
 from tactile_learning.utils.utils_learning import save_json_obj
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-t', '--tasks',
-        nargs='+',
-        help="Choose task from ['edge_2d', 'surface_3d', 'spherical_probe'].",
-        default=['surface_3d']
-    )
-    parser.add_argument(
-        '-i', '--input_dir',
-        nargs='+',
-        help="Choose input directory from ['tactip_331', 'sim_tactip'].",
-        default=['tactip_331']
-    )
-    parser.add_argument(
-        '-o', '--target_dir',
-        nargs='+',
-        help="Choose target directory from ['tactip_331', 'sim_tactip'].",
-        default=['sim_tactip']
-    )
-    parser.add_argument(
-        '-c', '--collection_modes',
-        nargs='+',
-        help="Choose task from ['tap', 'shear'].",
-        default=['tap']
-    )
-    parser.add_argument(
-        '-m', '--models',
-        nargs='+',
-        help="Choose model from ['pix2pix'].",
-        default=['pix2pix']
-    )
-    parser.add_argument(
-        '-r', '--image_dim',
-        help="Choose input directory from ['64', '128', '128'].",
-        default=128,
-        type=int
-    )
-    parser.add_argument(
-        '-d', '--device',
-        type=str,
-        help="Choose device from ['cpu', 'cuda'].",
-        default='cuda'
-    )
-
-    # parse arguments
-    args = parser.parse_args()
-    return args
-
-
-def setup_learning(image_dim, save_dir=None):
+def setup_learning(save_dir=None):
 
     # Parameters
     learning_params = {
@@ -69,7 +19,7 @@ def setup_learning(image_dim, save_dir=None):
         'adam_b1': 0.5,
         'adam_b2': 0.999,
         'shuffle': True,
-        'n_cpu': 8,
+        'n_cpu': 1,
         'sample_interval': 5,
         'lambda_gan': 1.0,
         'lambda_pixel': 100.0,
@@ -78,7 +28,7 @@ def setup_learning(image_dim, save_dir=None):
     }
 
     image_processing_params = {
-        'dims': (image_dim, image_dim),
+        'dims': (128, 128),
         'bbox': None,
         'thresh': None,
         'stdiz': False,
@@ -92,12 +42,16 @@ def setup_learning(image_dim, save_dir=None):
         'noise_var': None,
     }
 
+    preproc_params = {
+        'image_processing': image_processing_params,
+        'augmentation': augmentation_params
+    }
+
     if save_dir:
         save_json_obj(learning_params, os.path.join(save_dir, 'learning_params'))
-        save_json_obj(image_processing_params, os.path.join(save_dir, 'image_processing_params'))
-        save_json_obj(augmentation_params, os.path.join(save_dir, 'augmentation_params'))
+        save_json_obj(preproc_params, os.path.join(save_dir, 'preproc_params'))
 
-    return learning_params, image_processing_params, augmentation_params
+    return learning_params, preproc_params
 
 
 def setup_model(model_type, save_dir):
@@ -160,3 +114,21 @@ def setup_model(model_type, save_dir):
     save_json_obj(model_params, os.path.join(save_dir, 'model_params'))
 
     return model_params
+
+
+def setup_training(model_type, data_dirs, save_dir=None):
+    learning_params, preproc_params = setup_learning(save_dir)
+    model_params = setup_model(model_type, save_dir)
+
+    # retain data parameters
+    if save_dir:
+        shutil.copy(os.path.join(data_dirs[0], 'collect_params.json'), save_dir)
+        shutil.copy(os.path.join(data_dirs[0], 'env_params.json'), save_dir)
+        shutil.copy(os.path.join(data_dirs[0], 'sensor_params.json'), save_dir)
+
+        # if there is sensor process params, overwrite
+        sensor_proc_params_file = os.path.join(data_dirs[0], 'sensor_process_params.json')
+        if os.path.isfile(sensor_proc_params_file):
+            shutil.copyfile(sensor_proc_params_file, os.path.join(save_dir, 'sensor_params.json'))
+
+    return learning_params, model_params, preproc_params
