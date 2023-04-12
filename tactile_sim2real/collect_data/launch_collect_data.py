@@ -18,62 +18,62 @@ from tactile_sim2real.utils.parse_args import parse_args
 def launch():
 
     args = parse_args(
-        input_dirs=['cr_tactip'],
-        robot='sim', 
+        input_dirs=[''],
+        robot='sim',
         sensor='tactip',
         tasks=['edge_2d'],
-        # version=['tap']
+        version=['']
     )
 
     data_params = {
-        'train': 0,
-        'val': 0
+        'train': 10,
+        'val': 10
     }
 
-    for args.task, args.input_dir in it.product(args.tasks, args.input_dirs):
+    for task, input_dir, version in it.product(args.tasks, args.input_dirs, args.version):
         for data_dir_name, num_samples in data_params.items():
 
-            data_dir_name = '_'.join([data_dir_name, *args.version])
+            data_dir_name = '_'.join(filter(None, [data_dir_name, version]))
             output_dir = '_'.join([args.robot, args.sensor])
 
             # setup save dir
-            save_dir = os.path.join(BASE_DATA_PATH, output_dir, args.task, data_dir_name)
+            save_dir = os.path.join(BASE_DATA_PATH, output_dir, task, data_dir_name)
             image_dir = os.path.join(save_dir, "images")
             make_dir(save_dir)
             make_dir(image_dir)
 
             # setup parameters
             collect_params, env_params, sensor_params = setup_collect_data(
-                args.robot, 
+                args.robot,
                 args.sensor,
-                args.task, 
+                task,
                 save_dir
             )
 
             # setup embodiment
             robot, sensor = setup_embodiment(
-                env_params, 
+                env_params,
                 sensor_params
             )
 
             # setup targets to collect
-            if args.input_dir:
-                load_dir = os.path.join(BASE_DATA_PATH, args.input_dir, args.task, data_dir_name)
+            if input_dir:
+                load_dir = os.path.join(BASE_DATA_PATH, input_dir, task, data_dir_name)
                 target_df = pd.read_csv(os.path.join(load_dir, 'targets.csv'))
                 target_df.to_csv(os.path.join(save_dir, "targets.csv"), index=False)
 
             else:
                 target_df = setup_target_df(
                     collect_params,
-                    num_samples, 
+                    num_samples,
                     save_dir
                 )
 
-            # collect          
+            # collect
             collect_data(
                 robot,
-                sensor, 
-                target_df, 
+                sensor,
+                target_df,
                 image_dir,
                 collect_params
             )

@@ -18,30 +18,30 @@ def launch():
 
     args = parse_args(
         tasks=['edge_5d'],
-        input_dirs=['cr_tactip'],
+        input_dirs=['ur_tactip'],
         target_dirs=['sim_tactip'],
         models=['pix2pix_128'],
-        # version='tap',
+        version=['tap']
     )
 
     # combined data directories
     input_paths = [os.path.join(*i) for i in it.product(args.input_dirs, args.tasks)]
     target_paths = [os.path.join(*i) for i in it.product(args.target_dirs, args.tasks)]
 
-    train_dir_name = '_'.join(["train", *args.version])
-    val_dir_name = '_'.join(["val", *args.version])
+    train_dir_names = ['_'.join(filter(None, ["train", i])) for i in args.version]
+    val_dir_names = ['_'.join(filter(None, ["val", i])) for i in args.version]
 
     input_train_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in input_paths
+        os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in input_paths for train_dir_name in train_dir_names
     ]
     target_train_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in target_paths
+        os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in target_paths for train_dir_name in train_dir_names
     ]
     input_val_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in input_paths
+        os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in input_paths for val_dir_name in val_dir_names
     ]
     target_val_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in target_paths
+        os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in target_paths for val_dir_name in val_dir_names
     ]
 
     for args.model in args.models:
@@ -56,8 +56,8 @@ def launch():
 
         # setup parameters
         learning_params, model_params, preproc_params = setup_training(
-            args.model, 
-            input_train_data_dirs, 
+            args.model,
+            input_train_data_dirs,
             save_dir
         )
 

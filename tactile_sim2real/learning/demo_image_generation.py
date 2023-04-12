@@ -15,9 +15,9 @@ if __name__ == '__main__':
 
     args = parse_args(
         tasks=['edge_2d'],
-        input_dirs=['cr_tactip'],
+        input_dirs=['ur_tactip'],
         target_dirs=['sim_tactip'],
-        # version=['tap']
+        version=['']
     )
 
     learning_params, preproc_params = setup_learning()
@@ -26,17 +26,17 @@ if __name__ == '__main__':
     input_paths = [os.path.join(*i) for i in it.product(args.input_dirs, args.tasks)]
     target_paths = [os.path.join(*i) for i in it.product(args.target_dirs, args.tasks)]
 
-    train_dir_name = '_'.join(["train", *args.version])
-    val_dir_name = '_'.join(["val", *args.version])
+    train_dir_names = ['_'.join(filter(None, ["train", i])) for i in args.version]
+    val_dir_names = ['_'.join(filter(None, ["val", i])) for i in args.version]
 
     input_data_dirs = [
-        *[os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in input_paths],
-        *[os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in input_paths]
+        *[os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in input_paths for train_dir_name in train_dir_names],
+        *[os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in input_paths for val_dir_name in val_dir_names]
     ]
 
     target_data_dirs = [
-        *[os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in target_paths],
-        *[os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in target_paths]
+        *[os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in target_paths for train_dir_name in train_dir_names],
+        *[os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in target_paths for val_dir_name in val_dir_names]
     ]
 
     demo_image_generation(
@@ -44,5 +44,5 @@ if __name__ == '__main__':
         target_data_dirs,
         learning_params,
         preproc_params['image_processing'],
-        {} # preproc_params['augmentation']
+        preproc_params['augmentation']
     )

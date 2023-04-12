@@ -10,9 +10,9 @@ from tactile_sim2real.utils.parse_args import parse_args
 
 
 def main():
-    
+
     args = parse_args(
-        robot='sim', 
+        robot='sim',
         sensor='tactip',
         tasks=['edge_2d'],
         version=['test']
@@ -30,7 +30,7 @@ def main():
     }
 
     for args.task in args.tasks:
-        
+
         output_dir = '_'.join([args.robot, args.sensor])
         dir_in = '_'.join([dir_in, *args.version])
         dirs_out = ['_'.join([dir, *args.version]) for dir in dirs_out]
