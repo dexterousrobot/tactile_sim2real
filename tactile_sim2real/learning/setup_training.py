@@ -10,7 +10,7 @@ def setup_learning(save_dir=None):
     learning_params = {
         'seed': 42,
         'batch_size': 32,
-        'epochs': 100,
+        'epochs': 20,
         'n_val_batches': 10,
         'lr': 2e-4,
         'lr_factor': 0.5,
@@ -56,60 +56,55 @@ def setup_learning(save_dir=None):
 
 def setup_model(model_type, save_dir):
 
-    model_params = {
-        'model_type': model_type
-    }
-
-    if model_type == 'pix2pix_64':
-
-        model_params['generator_kwargs'] = {
-            'in_channels': 1,
-            'out_channels': 1,
-            'unet_down': [64, 128, 256, 512, 512, 512],
-            'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5],
-            'normalise_down': [False, True, True, True, True, False],
-            'unet_up': [0, 512, 512, 256, 128, 64],
-            'dropout_up': [0.5, 0.5, 0.5, 0.0, 0.0, 0.0],
-        }
-        model_params['discriminator_kwargs'] = {
-            'in_channels': 1,
-            'disc_block': [64, 128, 256, 512],
-            'normalise_disc': [False, True, True, True],
+    if 'pix2pix' in model_type:
+        model_params = {
+            'generator_kwargs': {
+                'in_channels': 1,
+                'out_channels': 1,
+            },
+            'discriminator_kwargs': {
+                'in_channels': 1,
+                'disc_block': [64, 128, 256, 512],
+                'normalise_disc': [False, True, True, True],
+            }
         }
 
-    elif model_type == 'pix2pix_128':
+        if '64' in model_type:
+            model_params['model_type'] = 'pix2pix_64',            
+            model_params['generator_kwargs'].update({
+                'unet_down': [64, 128, 256, 512, 512, 512],
+                'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5],
+                'normalise_down': [False, True, True, True, True, False],
+                'unet_up': [0, 512, 512, 256, 128, 64],
+                'dropout_up': [0.5, 0.5, 0.5, 0.0, 0.0, 0.0],
+            })
 
-        model_params['generator_kwargs'] = {
-            'in_channels': 1,
-            'out_channels': 1,
-            'unet_down': [64, 128, 256, 512, 512, 512, 512],
-            'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5],
-            'normalise_down': [False, True, True, True, True, True, False],
-            'unet_up': [0, 512, 512, 512, 256, 128, 64],
-            'dropout_up': [0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0],
-        }
-        model_params['discriminator_kwargs'] = {
-            'in_channels': 1,
-            'disc_block': [64, 128, 256, 512],
-            'normalise_disc': [False, True, True, True],
-        }
+        elif '128' in model_type:
+            model_params['model_type'] = 'pix2pix_128'           
+            model_params['generator_kwargs'].update({
+                'unet_down': [64, 128, 256, 512, 512, 512, 512],
+                'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5],
+                'normalise_down': [False, True, True, True, True, True, False],
+                'unet_up': [0, 512, 512, 512, 256, 128, 64],
+                'dropout_up': [0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0],
+            })
+            
+        elif '256' in model_type:
+            model_params['model_type'] = 'pix2pix_256'
+            model_params['generator_kwargs'].update({
+                'unet_down': [64, 128, 256, 512, 512, 512, 512, 512],
+                'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.5],
+                'normalise_down': [False, True, True, True, True, True, True, False],
+                'unet_up': [0, 512, 512, 512, 512, 256, 128, 64],
+                'dropout_up': [0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0],
+            })
 
-    elif model_type == 'pix2pix_256':
+        else:
+            print('dimension of pix2pix not recognized')
 
-        model_params['generator_kwargs'] = {
-            'in_channels': 1,
-            'out_channels': 1,
-            'unet_down': [64, 128, 256, 512, 512, 512, 512, 512],
-            'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.5],
-            'normalise_down': [False, True, True, True, True, True, True, False],
-            'unet_up': [0, 512, 512, 512, 512, 256, 128, 64],
-            'dropout_up': [0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0],
-        }
-        model_params['discriminator_kwargs'] = {
-            'in_channels': 1,
-            'disc_block': [64, 128, 256, 512],
-            'normalise_disc': [False, True, True, True],
-        }
+    else:
+        print('model not recognized')
+
     # save parameters
     save_json_obj(model_params, os.path.join(save_dir, 'model_params'))
 

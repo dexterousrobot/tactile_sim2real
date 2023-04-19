@@ -1,5 +1,5 @@
 """
-python demo_image_generation.py -i sim_tactip -o ur_tactip -t edge_2d -v tap
+python demo_image_generation.py -i sim_tactip -o cr_tactip -t edge_2d -iv tap -tv data
 """
 import os
 import itertools as it
@@ -17,7 +17,8 @@ if __name__ == '__main__':
         tasks=['edge_2d'],
         input_dirs=['cr_tactip'],
         target_dirs=['sim_tactip'],
-        # version=['tap']
+        input_version=['data'],
+        target_version=['data_temp']
     )
 
     learning_params, preproc_params = setup_learning()
@@ -26,17 +27,19 @@ if __name__ == '__main__':
     input_paths = [os.path.join(*i) for i in it.product(args.input_dirs, args.tasks)]
     target_paths = [os.path.join(*i) for i in it.product(args.target_dirs, args.tasks)]
 
-    train_dir_name = '_'.join(["train", *args.version])
-    val_dir_name = '_'.join(["val", *args.version])
+    input_train_dir_name = '_'.join(["train", *args.input_version])
+    target_train_dir_name = '_'.join(["train", *args.target_version])
+    input_val_dir_name = '_'.join(["val", *args.input_version])
+    target_val_dir_name = '_'.join(["val", *args.target_version])
 
     input_data_dirs = [
-        *[os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in input_paths],
-        *[os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in input_paths]
+        *[os.path.join(BASE_DATA_PATH, path, input_train_dir_name) for path in input_paths],
+        *[os.path.join(BASE_DATA_PATH, path, input_val_dir_name) for path in input_paths]
     ]
 
     target_data_dirs = [
-        *[os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in target_paths],
-        *[os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in target_paths]
+        *[os.path.join(BASE_DATA_PATH, path, target_train_dir_name) for path in target_paths],
+        *[os.path.join(BASE_DATA_PATH, path, target_val_dir_name) for path in target_paths]
     ]
 
     demo_image_generation(
@@ -44,5 +47,5 @@ if __name__ == '__main__':
         target_data_dirs,
         learning_params,
         preproc_params['image_processing'],
-        {} # preproc_params['augmentation']
+        preproc_params['augmentation']
     )
