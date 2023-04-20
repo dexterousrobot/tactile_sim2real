@@ -14,44 +14,36 @@ from tactile_sim2real.learning.setup_training import setup_training
 from tactile_sim2real.utils.parse_args import parse_args
 
 
-def launch():
+def launch(args):
 
-    args = parse_args(
-        tasks=['edge_5d'],
-        input_dirs=['ur_tactip'],
-        target_dirs=['sim_tactip'],
-        models=['pix2pix_128'],
-        version=['tap']
-    )
-
-    # combined data directories
     input_paths = [os.path.join(*i) for i in it.product(args.input_dirs, args.tasks)]
     target_paths = [os.path.join(*i) for i in it.product(args.target_dirs, args.tasks)]
 
-    train_dir_names = ['_'.join(filter(None, ["train", i])) for i in args.version]
-    val_dir_names = ['_'.join(filter(None, ["val", i])) for i in args.version]
+    input_train_dir_name = '_'.join(["train", *args.input_version])
+    target_train_dir_name = '_'.join(["train", *args.target_version])
+    input_val_dir_name = '_'.join(["val", *args.input_version])
+    target_val_dir_name = '_'.join(["val", *args.target_version])
 
     input_train_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in input_paths for train_dir_name in train_dir_names
+        os.path.join(BASE_DATA_PATH, path, input_train_dir_name) for path in input_paths
     ]
     target_train_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, train_dir_name) for path in target_paths for train_dir_name in train_dir_names
+        os.path.join(BASE_DATA_PATH, path, target_train_dir_name) for path in target_paths
     ]
     input_val_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in input_paths for val_dir_name in val_dir_names
+        os.path.join(BASE_DATA_PATH, path, input_val_dir_name) for path in input_paths
     ]
     target_val_data_dirs = [
-        os.path.join(BASE_DATA_PATH, path, val_dir_name) for path in target_paths for val_dir_name in val_dir_names
+        os.path.join(BASE_DATA_PATH, path, target_val_dir_name) for path in target_paths
     ]
 
     for args.model in args.models:
 
         output_dir = "_to_".join([*args.input_dirs, *args.target_dirs])
         task_dir = "_".join(args.tasks)
-        model_dir_name = "_".join([args.model, *args.version])
 
         # setup save dir
-        save_dir = os.path.join(BASE_MODEL_PATH, output_dir, task_dir, model_dir_name)
+        save_dir = os.path.join(BASE_MODEL_PATH, output_dir, task_dir, args.model)
         make_dir(save_dir)
 
         # setup parameters
@@ -95,4 +87,14 @@ def launch():
 
 
 if __name__ == "__main__":
-    launch()
+
+    args = parse_args(
+        tasks=['edge_2d'],
+        input_dirs=['cr_tactip'],
+        target_dirs=['sim_tactip'],
+        models=['pix2pix_128_temp'],
+        input_version=['data'],
+        target_version=['data_temp']
+    )
+
+    launch(args)

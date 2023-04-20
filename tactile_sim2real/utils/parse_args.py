@@ -8,7 +8,9 @@ def parse_args(
     sensor='tactip',
     tasks=['edge_2d'],
     models=['pix2pix_128'],
-    version=[],
+    input_version=[],
+    data_version=[],
+    target_version=[],
     device='cuda'
 ):
     parser = argparse.ArgumentParser()
@@ -50,10 +52,22 @@ def parse_args(
         default=models
     )
     parser.add_argument(
-        '-v', '--version',
+        '-iv', '--input_version',
         type=str,
         help="Choose version from ['tap', 'shear].",
-        default=version
+        default=input_version
+    )
+    parser.add_argument(
+        '-dv', '--data_version',
+        type=str,
+        help="Choose version from ['tap', 'shear].",
+        default=data_version
+    )
+    parser.add_argument(
+        '-tv', '--target_version',
+        type=str,
+        help="Choose version from ['tap', 'shear].",
+        default=target_version
     )
     parser.add_argument(
         '-d', '--device',
