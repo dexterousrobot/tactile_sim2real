@@ -2,31 +2,20 @@ import argparse
 
 
 def parse_args(
-    input_dirs=[],
-    target_dirs=['sim_tactip'],
     robot='sim',
     sensor='tactip',
     tasks=['edge_2d'],
+    inputs=['abb_tactip'],
+    data_dirs=['train', 'val'],
+    train_dirs=['train'],
+    val_dirs=['val'],
+    targets=['sim_tactip'],
     models=['pix2pix_128'],
-    input_version=[],
-    data_version=[],
-    target_version=[],
+    model_version=[],
     device='cuda'
 ):
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        '-i', '--input_dirs',
-        nargs='+',
-        help="Choose input directory from ['ur_tactip', 'sim_tactip'].",
-        default=input_dirs
-    )
-    parser.add_argument(
-        '-o', '--target_dirs',
-        nargs='+',
-        help="Choose target directory from ['ur_tactip', 'sim_tactip'].",
-        default=target_dirs
-    )
     parser.add_argument(
         '-r', '--robot',
         type=str,
@@ -38,12 +27,42 @@ def parse_args(
         type=str,
         help="Choose sensor from ['tactip', 'tactip_127']",
         default=sensor
-    )    
+    ) 
     parser.add_argument(
         '-t', '--tasks',
         nargs='+',
         help="Choose tasks from ['surface_3d', 'edge_2d', 'edge_3d', 'edge_5d']",
         default=tasks
+    )
+    parser.add_argument(
+        '-i', '--inputs',
+        nargs='+',
+        help="Choose input directory from ['ur_tactip', 'sim_tactip'].",
+        default=inputs
+    )
+    parser.add_argument(
+        '-dd', '--data_dirs',
+        nargs='+',
+        help="Specify data directories (default ['train', 'val']).",
+        default=data_dirs
+    )
+    parser.add_argument(
+        '-dt', '--train_dirs',
+        nargs='+',
+        help="Specify train data directories (default ['train').",
+        default=train_dirs
+    )
+    parser.add_argument(
+        '-dv', '--val_dirs',
+        nargs='+',
+        help="Specify validation data directories (default ['val']).",
+        default=val_dirs
+    )
+    parser.add_argument(
+        '-o', '--targets',
+        nargs='+',
+        help="Choose target directory from ['ur_tactip', 'sim_tactip'].",
+        default=targets
     )
     parser.add_argument(
         '-m', '--models',
@@ -52,22 +71,10 @@ def parse_args(
         default=models
     )
     parser.add_argument(
-        '-iv', '--input_version',
+        '-mv', '--model_version',
         type=str,
-        help="Choose version from ['tap', 'shear].",
-        default=input_version
-    )
-    parser.add_argument(
-        '-dv', '--data_version',
-        type=str,
-        help="Choose version from ['tap', 'shear].",
-        default=data_version
-    )
-    parser.add_argument(
-        '-tv', '--target_version',
-        type=str,
-        help="Choose version from ['tap', 'shear].",
-        default=target_version
+        help="Choose model version]",
+        default=model_version
     )
     parser.add_argument(
         '-d', '--device',
