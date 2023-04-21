@@ -84,22 +84,13 @@ def launch(args):
 if __name__ == "__main__":
 
     args = parse_args(
-<<<<<<< HEAD
-        tasks=['surface_3d'],
-        input_dirs=['ur_tactip'],
-        target_dirs=['sim_tactip'],
-        models=['pix2pix_256'],
-        input_version=['tap'],
-        target_version=['tap']
-=======
         inputs=['ur_tactip'],
         targets=['sim_ur_tactip'],
         tasks=['edge_2d'],
         train_dirs=['train_shear'],
         val_dirs=['val_shear'],
-        models=['pix2pix_64'],
-        model_version=['temp'],
->>>>>>> 2bf2bff0ed671ba75e91de0cc2c7200601079a95
+        models=['pix2pix_256'],
+        model_version=[''],
     )
 
     launch(args)

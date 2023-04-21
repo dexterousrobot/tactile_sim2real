@@ -98,18 +98,19 @@ def run_live_generation(
 if __name__ == "__main__":
 
     args = parse_args(
+        inputs=['ur_tactip'],
+        targets=['sim_ur_tactip'],
         tasks=['surface_3d'],
-        input_dirs=['ur_tactip'],
-        target_dirs=['sim_tactip'],
+        train_dirs=['train_shear'],
+        val_dirs=['val_shear'],
         models=['pix2pix_256'],
-        input_version=['tap'],
-        target_version=['tap']
+        model_version=[''],
     )
 
     for args.task, args.model in it.product(args.tasks, args.models):
 
         # get model dir
-        output_dir = "_to_".join([*args.input_dirs, *args.target_dirs])
+        output_dir = "_to_".join([*args.inputs, *args.targets])
         model_dir = os.path.join(BASE_MODEL_PATH, output_dir, args.task, args.model)
 
         # setup parameters
@@ -136,5 +137,5 @@ if __name__ == "__main__":
         run_live_generation(
             camera,
             generator_model,
-            record_video=True
+            record_video=False
         )
