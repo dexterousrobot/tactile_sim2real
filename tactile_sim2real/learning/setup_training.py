@@ -58,6 +58,7 @@ def setup_model(model_type, save_dir):
 
     if 'pix2pix' in model_type:
         model_params = {
+            'model_type': model_type,          
             'generator_kwargs': {
                 'in_channels': 1,
                 'out_channels': 1,
@@ -69,8 +70,7 @@ def setup_model(model_type, save_dir):
             }
         }
 
-        if '64' in model_type:
-            model_params['model_type'] = 'pix2pix_64',            
+        if model_type == 'pix2pix_64':
             model_params['generator_kwargs'].update({
                 'unet_down': [64, 128, 256, 512, 512, 512],
                 'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5],
@@ -79,8 +79,7 @@ def setup_model(model_type, save_dir):
                 'dropout_up': [0.5, 0.5, 0.5, 0.0, 0.0, 0.0],
             })
 
-        elif '128' in model_type:
-            model_params['model_type'] = 'pix2pix_128'           
+        elif model_type == 'pix2pix_128':
             model_params['generator_kwargs'].update({
                 'unet_down': [64, 128, 256, 512, 512, 512, 512],
                 'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5],
@@ -89,8 +88,7 @@ def setup_model(model_type, save_dir):
                 'dropout_up': [0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0],
             })
             
-        elif '256' in model_type:
-            model_params['model_type'] = 'pix2pix_256'
+        elif model_type == 'pix2pix_256':
             model_params['generator_kwargs'].update({
                 'unet_down': [64, 128, 256, 512, 512, 512, 512, 512],
                 'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.5],
