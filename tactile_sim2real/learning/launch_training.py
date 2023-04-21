@@ -89,12 +89,12 @@ def launch(args):
 if __name__ == "__main__":
 
     args = parse_args(
-        tasks=['edge_2d'],
-        input_dirs=['cr_tactip'],
+        tasks=['surface_3d'],
+        input_dirs=['ur_tactip'],
         target_dirs=['sim_tactip'],
-        models=['pix2pix_128_temp'],
-        input_version=['data'],
-        target_version=['data_temp']
+        models=['pix2pix_256'],
+        input_version=['tap'],
+        target_version=['tap']
     )
 
     launch(args)

@@ -17,8 +17,8 @@ if __name__ == '__main__':
         tasks=['edge_2d'],
         input_dirs=['ur_tactip'],
         target_dirs=['sim_tactip'],
-        input_version=['data'],
-        target_version=['data_temp']
+        input_version=['tap'],
+        target_version=['tap']
     )
 
     learning_params, preproc_params = setup_learning()

@@ -28,7 +28,7 @@ def setup_learning(save_dir=None):
     }
 
     image_processing_params = {
-        'dims': (128, 128),
+        'dims': (256, 256),
         'bbox': None,
         'thresh': None,
         'stdiz': False,
@@ -70,7 +70,7 @@ def setup_model(model_type, save_dir):
         }
 
         if '64' in model_type:
-            model_params['model_type'] = 'pix2pix_64',            
+            model_params['model_type'] = 'pix2pix_64',
             model_params['generator_kwargs'].update({
                 'unet_down': [64, 128, 256, 512, 512, 512],
                 'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5],
@@ -80,7 +80,7 @@ def setup_model(model_type, save_dir):
             })
 
         elif '128' in model_type:
-            model_params['model_type'] = 'pix2pix_128'           
+            model_params['model_type'] = 'pix2pix_128'
             model_params['generator_kwargs'].update({
                 'unet_down': [64, 128, 256, 512, 512, 512, 512],
                 'dropout_down': [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5],
@@ -88,7 +88,7 @@ def setup_model(model_type, save_dir):
                 'unet_up': [0, 512, 512, 512, 256, 128, 64],
                 'dropout_up': [0.5, 0.5, 0.5, 0.5, 0.0, 0.0, 0.0],
             })
-            
+
         elif '256' in model_type:
             model_params['model_type'] = 'pix2pix_256'
             model_params['generator_kwargs'].update({
