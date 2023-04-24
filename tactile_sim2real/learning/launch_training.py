@@ -42,7 +42,7 @@ def launch(args):
         make_dir(save_dir)
 
         # setup parameters
-        learning_params, model_params, preproc_params = setup_training(
+        learning_params, model_params, image_params = setup_training(
             args.model,
             input_train_data_dirs,
             save_dir
@@ -52,18 +52,18 @@ def launch(args):
         train_generator = Pix2PixImageGenerator(
             input_train_data_dirs,
             target_train_data_dirs,
-            **{**preproc_params['image_processing'], **preproc_params['augmentation']}
+            **{**image_params['image_processing'], **image_params['augmentation']}
         )
         val_generator = Pix2PixImageGenerator(
             input_val_data_dirs,
             target_val_data_dirs,
-            **preproc_params['image_processing']
+            **image_params['image_processing']
         )
 
         # create the model
         seed_everything(learning_params['seed'])
         generator, discriminator = create_model(
-            preproc_params['image_processing']['dims'],
+            image_params['image_processing']['dims'],
             model_params,
             device=args.device
         )
@@ -75,7 +75,7 @@ def launch(args):
             train_generator,
             val_generator,
             learning_params,
-            preproc_params['image_processing'],
+            image_params['image_processing'],
             save_dir,
             device=args.device
         )
@@ -84,12 +84,12 @@ def launch(args):
 if __name__ == "__main__":
 
     args = parse_args(
-        inputs=['ur_tactip'],
-        targets=['sim_ur_tactip'],
-        tasks=['edge_2d'],
-        train_dirs=['train_shear'],
-        val_dirs=['val_shear'],
-        models=['pix2pix_256'],
+        inputs=['cr_tactip'],
+        targets=['sim_cr_tactip'],
+        tasks=['edge_5d'],
+        train_dirs=['train_data'],
+        val_dirs=['val_data'],
+        models=['pix2pix_64'],
         model_version=[''],
     )
 
