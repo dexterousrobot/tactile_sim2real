@@ -15,10 +15,10 @@ from tactile_sim2real.utils.parse_args import parse_args
 if __name__ == '__main__':
 
     args = parse_args(
-        inputs=['ur_tactip'],
-        targets=['sim_ur_tactip'],
+        inputs=['cr_tactip'],
+        targets=['sim_cr_tactip'],
         tasks=['edge_2d'],
-        data_dirs=['train_shear', 'val_shear']
+        data_dirs=['train_data', 'val_data']
     )
 
     learning_params, preproc_params = setup_learning()
