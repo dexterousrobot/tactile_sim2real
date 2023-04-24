@@ -8,7 +8,6 @@ This repos contains data collection, training and inference scripts for the task
 
 ### Content ###
 - [Installation](#installation)
-- [Requirements](#requirements)
 - [Arguments](#arguments)
 - [Data Collection](#data-collection)
 - [Learning](#learning)
@@ -19,13 +18,13 @@ This repos contains data collection, training and inference scripts for the task
 
 ### Installation ###
 
+This repo relies on the [Tactile Learning](https://github.com/dexterousrobot/tactile_learning) and [Tactile Data](https://github.com/dexterousrobot/tactile_data) reposotories. Please follow installation instructions within these repos first.
+
 ```
 git clone https://github.com/dexterousrobot/tactile_sim2real
 cd tactile_sim2real
 pip install -e .
 ```
-
-### Requirements ###
 
 ### Arguments ###
 

@@ -31,7 +31,7 @@ def parse_args(
     parser.add_argument(
         '-t', '--tasks',
         nargs='+',
-        help="Choose tasks from ['surface_3d', 'edge_2d', 'edge_3d', 'edge_5d']",
+        help="Choose tasks from ['surface_3d', 'edge_2d', 'spherical_probe']",
         default=tasks
     )
     parser.add_argument(
