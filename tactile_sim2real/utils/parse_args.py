@@ -7,6 +7,7 @@ def parse_args(
     tasks=['edge_2d'],
     inputs=['abb_tactip'],
     data_dirs=['train', 'val'],
+    sample_nums=[80, 20],
     train_dirs=['train'],
     val_dirs=['val'],
     targets=['sim_tactip'],
@@ -45,6 +46,12 @@ def parse_args(
         nargs='+',
         help="Specify data directories (default ['train', 'val']).",
         default=data_dirs
+    )
+    parser.add_argument(
+        '-n', '--sample_nums',
+        type=int,
+        help="Choose numbers of samples (default [80, 20]).",
+        default=sample_nums
     )
     parser.add_argument(
         '-dt', '--train_dirs',

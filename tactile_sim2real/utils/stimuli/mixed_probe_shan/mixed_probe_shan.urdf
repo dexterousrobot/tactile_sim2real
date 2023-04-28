@@ -7,7 +7,7 @@
 
 	<link name="cone">
 		<visual>
-			<origin rpy="0 0 0" xyz="-0.05 -0.15 0.0" />
+			<origin rpy="0 0 0" xyz="-0.025 -0.075 0.0" />
 			<geometry>
 				<mesh filename="cone/cone.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -19,7 +19,7 @@
 			<geometry>
 				<mesh filename="cone/cone_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="-0.05 -0.15 0.0" /></collision>
+		<origin rpy="0 0 0" xyz="-0.025 -0.075 0.0" /></collision>
 		<inertial>
 			<mass value="1.0" />
 			<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
@@ -35,7 +35,7 @@
 
   <link name="cross_lines">
 		<visual>
-			<origin rpy="0 0 0" xyz="-0.05 -0.1 0.0" />
+			<origin rpy="0 0 0" xyz="-0.025 -0.05 0.0" />
 			<geometry>
 				<mesh filename="cross_lines/cross_lines.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -47,7 +47,7 @@
 			<geometry>
 				<mesh filename="cross_lines/cross_lines_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="-0.05 -0.1 0.0" />
+		<origin rpy="0 0 0" xyz="-0.025 -0.05 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -64,7 +64,7 @@
 
   <link name="curved_surface">
 		<visual>
-			<origin rpy="0 0 0" xyz="-0.05 -0.05 0.0" />
+			<origin rpy="0 0 0" xyz="-0.025 -0.025 0.0" />
 			<geometry>
 				<mesh filename="curved_surface/curved_surface.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -76,7 +76,7 @@
 			<geometry>
 				<mesh filename="curved_surface/curved_surface_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="-0.05 -0.05 0.0" />
+		<origin rpy="0 0 0" xyz="-0.025 -0.025 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -92,7 +92,7 @@
 
   <link name="cylinder">
 		<visual>
-			<origin rpy="0 0 0" xyz="-0.05 0.0 0.0" />
+			<origin rpy="0 0 0" xyz="-0.025 0.0 0.0" />
 			<geometry>
 				<mesh filename="cylinder/cylinder.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -104,7 +104,7 @@
 			<geometry>
 				<mesh filename="cylinder/cylinder_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="-0.05 0.0 0.0" />
+		<origin rpy="0 0 0" xyz="-0.025 0.0 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -120,7 +120,7 @@
 
   <link name="cylinder_shell">
 		<visual>
-			<origin rpy="0 0 0" xyz="-0.05 0.05 0.0" />
+			<origin rpy="0 0 0" xyz="-0.025 0.025 0.0" />
 			<geometry>
 				<mesh filename="cylinder_shell/cylinder_shell.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -132,7 +132,7 @@
 			<geometry>
 				<mesh filename="cylinder_shell/cylinder_shell_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="-0.05 0.05 0.0" />
+		<origin rpy="0 0 0" xyz="-0.025 0.025 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -148,7 +148,7 @@
 
   <link name="cylinder_side">
 		<visual>
-			<origin rpy="0 0 0" xyz="-0.05 0.1 0.0" />
+			<origin rpy="0 0 0" xyz="-0.025 0.05 0.0" />
 			<geometry>
 				<mesh filename="cylinder_side/cylinder_side.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -160,7 +160,7 @@
 			<geometry>
 				<mesh filename="cylinder_side/cylinder_side_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="-0.05 0.1 0.0" />
+		<origin rpy="0 0 0" xyz="-0.025 0.05 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -176,7 +176,7 @@
 
   <link name="dot_in">
 		<visual>
-			<origin rpy="0 0 0" xyz="-0.05 0.15 0.0" />
+			<origin rpy="0 0 0" xyz="-0.025 0.075 0.0" />
 			<geometry>
 				<mesh filename="dot_in/dot_in.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -188,7 +188,7 @@
 			<geometry>
 				<mesh filename="dot_in/dot_in_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="-0.05 0.15 0.0" />
+		<origin rpy="0 0 0" xyz="-0.025 0.075 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -206,7 +206,7 @@
 
   <link name="dots">
 		<visual>
-			<origin rpy="0 0 0" xyz="0.0 -0.15 0.0" />
+			<origin rpy="0 0 0" xyz="0.0 -0.075 0.0" />
 			<geometry>
 				<mesh filename="dots/dots.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -218,7 +218,7 @@
 			<geometry>
 				<mesh filename="dots/dots_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="0.0 -0.15 0.0" />
+		<origin rpy="0 0 0" xyz="0.0 -0.075 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -234,7 +234,7 @@
 
   <link name="flat_slab">
 		<visual>
-			<origin rpy="0 0 0" xyz="0.0 -0.1 0.0" />
+			<origin rpy="0 0 0" xyz="0.0 -0.05 0.0" />
 			<geometry>
 				<mesh filename="flat_slab/flat_slab.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -246,7 +246,7 @@
 			<geometry>
 				<mesh filename="flat_slab/flat_slab_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="0.0 -0.1 0.0" />
+		<origin rpy="0 0 0" xyz="0.0 -0.05 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -262,7 +262,7 @@
 
   <link name="hexagon">
 		<visual>
-			<origin rpy="0 0 0" xyz="0.0 -0.05 0.0" />
+			<origin rpy="0 0 0" xyz="0.0 -0.025 0.0" />
 			<geometry>
 				<mesh filename="hexagon/hexagon.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -274,7 +274,7 @@
 			<geometry>
 				<mesh filename="hexagon/hexagon_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="0.0 -0.05 0.0" />
+		<origin rpy="0 0 0" xyz="0.0 -0.025 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -318,7 +318,7 @@
 
   <link name="moon">
 		<visual>
-			<origin rpy="0 0 0" xyz="0.0 0.05 0.0" />
+			<origin rpy="0 0 0" xyz="0.0 0.025 0.0" />
 			<geometry>
 				<mesh filename="moon/moon.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -330,7 +330,7 @@
 			<geometry>
 				<mesh filename="moon/moon_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="0.0 0.05 0.0" />
+		<origin rpy="0 0 0" xyz="0.0 0.025 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -346,7 +346,7 @@
 
   <link name="pacman">
 		<visual>
-			<origin rpy="0 0 0" xyz="0.0 0.1 0.0" />
+			<origin rpy="0 0 0" xyz="0.0 0.05 0.0" />
 			<geometry>
 				<mesh filename="pacman/pacman.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -358,7 +358,7 @@
 			<geometry>
 				<mesh filename="pacman/pacman_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="0.0 0.1 0.0" />
+		<origin rpy="0 0 0" xyz="0.0 0.05 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -374,7 +374,7 @@
 
   <link name="parallel_lines">
 		<visual>
-			<origin rpy="0 0 0" xyz="0.0 0.15 0.0" />
+			<origin rpy="0 0 0" xyz="0.0 0.075 0.0" />
 			<geometry>
 				<mesh filename="parallel_lines/parallel_lines.obj" scale=".001 .001 .001" />
 			</geometry>
@@ -386,7 +386,7 @@
 			<geometry>
 				<mesh filename="parallel_lines/parallel_lines_vhacd.obj" scale=".001 .001 .001" />
 			</geometry>
-		<origin rpy="0 0 0" xyz="0.0 0.15 0.0" />
+		<origin rpy="0 0 0" xyz="0.0 0.075 0.0" />
     </collision>
 		<inertial>
 			<mass value="1.0" />
@@ -404,7 +404,7 @@
 
     <link name="prism">
   		<visual>
-  			<origin rpy="0 0 0" xyz="0.05 -0.15 0.0" />
+  			<origin rpy="0 0 0" xyz="0.025 -0.075 0.0" />
   			<geometry>
   				<mesh filename="prism/prism.obj" scale=".001 .001 .001" />
   			</geometry>
@@ -416,7 +416,7 @@
   			<geometry>
   				<mesh filename="prism/prism_vhacd.obj" scale=".001 .001 .001" />
   			</geometry>
-  		<origin rpy="0 0 0" xyz="0.05 -0.15 0.0" />
+  		<origin rpy="0 0 0" xyz="0.025 -0.075 0.0" />
       </collision>
   		<inertial>
   			<mass value="1.0" />
@@ -432,7 +432,7 @@
 
     <link name="random">
   		<visual>
-  			<origin rpy="0 0 0" xyz="0.05 -0.1 0.0" />
+  			<origin rpy="0 0 0" xyz="0.025 -0.05 0.0" />
   			<geometry>
   				<mesh filename="random/random.obj" scale=".001 .001 .001" />
   			</geometry>
@@ -444,7 +444,7 @@
   			<geometry>
   				<mesh filename="random/random_vhacd.obj" scale=".001 .001 .001" />
   			</geometry>
-  		<origin rpy="0 0 0" xyz="0.05 -0.1 0.0" />
+  		<origin rpy="0 0 0" xyz="0.025 -0.05 0.0" />
       </collision>
   		<inertial>
   			<mass value="1.0" />
@@ -460,7 +460,7 @@
 
     <link name="sphere">
   		<visual>
-  			<origin rpy="0 0 0" xyz="0.05 -0.05 0.0" />
+  			<origin rpy="0 0 0" xyz="0.025 -0.025 0.0" />
   			<geometry>
   				<mesh filename="sphere/sphere.obj" scale=".001 .001 .001" />
   			</geometry>
@@ -472,7 +472,7 @@
   			<geometry>
   				<mesh filename="sphere/sphere_vhacd.obj" scale=".001 .001 .001" />
   			</geometry>
-  		<origin rpy="0 0 0" xyz="0.05 -0.05 0.0" />
+  		<origin rpy="0 0 0" xyz="0.025 -0.025 0.0" />
       </collision>
   		<inertial>
   			<mass value="1.0" />
@@ -488,7 +488,7 @@
 
     <link name="sphere2">
   		<visual>
-  			<origin rpy="0 0 0" xyz="0.05 0.0 0.0" />
+  			<origin rpy="0 0 0" xyz="0.025 0.0 0.0" />
   			<geometry>
   				<mesh filename="sphere2/sphere2.obj" scale=".001 .001 .001" />
   			</geometry>
@@ -500,7 +500,7 @@
   			<geometry>
   				<mesh filename="sphere2/sphere2_vhacd.obj" scale=".001 .001 .001" />
   			</geometry>
-  		<origin rpy="0 0 0" xyz="0.05 0.0 0.0" />
+  		<origin rpy="0 0 0" xyz="0.025 0.0 0.0" />
       </collision>
   		<inertial>
   			<mass value="1.0" />
@@ -516,7 +516,7 @@
 
     <link name="torus">
   		<visual>
-  			<origin rpy="0 0 0" xyz="0.05 0.05 0.0" />
+  			<origin rpy="0 0 0" xyz="0.025 0.025 0.0" />
   			<geometry>
   				<mesh filename="torus/torus.obj" scale=".001 .001 .001" />
   			</geometry>
@@ -528,7 +528,7 @@
   			<geometry>
   				<mesh filename="torus/torus_vhacd.obj" scale=".001 .001 .001" />
   			</geometry>
-  		<origin rpy="0 0 0" xyz="0.05 0.05 0.0" />
+  		<origin rpy="0 0 0" xyz="0.025 0.025 0.0" />
       </collision>
   		<inertial>
   			<mass value="1.0" />
@@ -544,7 +544,7 @@
 
     <link name="triangle">
   		<visual>
-  			<origin rpy="0 0 0" xyz="0.05 0.1 0.0" />
+  			<origin rpy="0 0 0" xyz="0.025 0.05 0.0" />
   			<geometry>
   				<mesh filename="triangle/triangle.obj" scale=".001 .001 .001" />
   			</geometry>
@@ -556,7 +556,7 @@
   			<geometry>
   				<mesh filename="triangle/triangle_vhacd.obj" scale=".001 .001 .001" />
   			</geometry>
-  		<origin rpy="0 0 0" xyz="0.05 0.1 0.0" />
+  		<origin rpy="0 0 0" xyz="0.025 0.05 0.0" />
       </collision>
   		<inertial>
   			<mass value="1.0" />
@@ -572,7 +572,7 @@
 
     <link name="wave1">
   		<visual>
-  			<origin rpy="0 0 0" xyz="0.05 0.15 0.0" />
+  			<origin rpy="0 0 0" xyz="0.025 0.075 0.0" />
   			<geometry>
   				<mesh filename="wave1/wave1.obj" scale=".001 .001 .001" />
   			</geometry>
@@ -584,7 +584,7 @@
   			<geometry>
   				<mesh filename="wave1/wave1_vhacd.obj" scale=".001 .001 .001" />
   			</geometry>
-  		<origin rpy="0 0 0" xyz="0.05 0.15 0.0" />
+  		<origin rpy="0 0 0" xyz="0.025 0.075 0.0" />
       </collision>
   		<inertial>
   			<mass value="1.0" />

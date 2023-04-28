@@ -8,11 +8,12 @@ import pandas as pd
 from tactile_data.tactile_servo_control import BASE_DATA_PATH as INPUT_DATA_PATH
 from tactile_data.tactile_sim2real import BASE_DATA_PATH as TARGET_DATA_PATH
 from tactile_data.collect_data.collect_data import collect_data
+from tactile_data.collect_data.setup_targets import setup_targets
 from tactile_data.collect_data.process_image_data import process_image_data, partition_data
 from tactile_data.utils import make_dir
-from tactile_servo_control.collect_data.setup_collect_data import setup_collect_data
-from tactile_servo_control.utils.setup_embodiment import setup_embodiment
 
+from tactile_sim2real.collect_data.setup_collect_data import setup_collect_data
+from tactile_sim2real.utils.setup_embodiment import setup_embodiment
 from tactile_sim2real.utils.parse_args import parse_args
 
 
@@ -21,7 +22,7 @@ def launch(args):
     output_dir = '_'.join([args.robot, args.sensor])
 
     for args.task, args.input in it.product(args.tasks, args.inputs):
-        for args.data_dir in args.data_dirs:
+        for args.data_dir, args.sample_num in zip(args.data_dirs, args.sample_nums):
 
             # setup save dir
             save_dir = os.path.join(TARGET_DATA_PATH, output_dir, args.task, args.data_dir)
@@ -44,9 +45,18 @@ def launch(args):
             )
 
             # load targets to collect (select one of available)
-            load_dir = os.path.join(INPUT_DATA_PATH, args.input, args.task, args.data_dir)
-            target_df = pd.read_csv(os.path.join(load_dir, 'targets_images.csv'))
-            target_df.to_csv(os.path.join(save_dir, "targets.csv"), index=False)
+            if args.input:
+                load_dir = os.path.join(INPUT_DATA_PATH, args.input, args.task, args.data_dir)
+                target_df = pd.read_csv(os.path.join(load_dir, 'targets_images.csv'))
+                target_df.to_csv(os.path.join(save_dir, "targets.csv"), index=False)
+
+            else:
+                # setup targets to collect
+                target_df = setup_targets(
+                    collect_params,
+                    args.sample_num,
+                    save_dir
+                )
 
             # collect
             collect_data(
@@ -72,16 +82,16 @@ def process_images(args, image_params, split=None):
 if __name__ == "__main__":
 
     args = parse_args(
-        inputs=['cr_tactip'],
-        robot='sim_cr',
+        inputs=[''],
+        robot='sim_ur',
         sensor='tactip',
-        tasks=['surface_3d'],
-        data_dirs=['train_data', 'val_data']
+        tasks=['mixed_probe_shan'],
+        data_dirs=['temp'],
+        sample_nums=[10]
     )
+    launch(args)
 
     image_params = {
         "bbox": (12, 12, 240, 240)  # sim (12, 12, 240, 240)
     }
-
-    launch(args)
-    process_images(args, image_params)#, split=0.8)
+    process_images(args, image_params)  # , split=0.8)
