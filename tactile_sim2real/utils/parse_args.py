@@ -5,7 +5,7 @@ def parse_args(
     robot='sim',
     sensor='tactip',
     tasks=['edge_2d'],
-    inputs=['abb_tactip'],
+    inputs=[''],
     data_dirs=['train', 'val'],
     sample_nums=[80, 20],
     train_dirs=['train'],
@@ -38,7 +38,7 @@ def parse_args(
     parser.add_argument(
         '-i', '--inputs',
         nargs='+',
-        help="Choose input directory from ['ur_tactip', 'sim_tactip'].",
+        help="Choose input directory from ['', 'ur_tactip', 'sim_tactip'].",
         default=inputs
     )
     parser.add_argument(

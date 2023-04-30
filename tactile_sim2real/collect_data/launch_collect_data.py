@@ -4,8 +4,9 @@ python launch_collect_data.py -i cr_tactip -r sim_cr -s tactip -t edge_5d
 import os
 import itertools as it
 import pandas as pd
+import shutil
 
-from tactile_data.tactile_servo_control import BASE_DATA_PATH as INPUT_DATA_PATH
+from tactile_data.tactile_sim2real import BASE_DATA_PATH as INPUT_DATA_PATH
 from tactile_data.tactile_sim2real import BASE_DATA_PATH as TARGET_DATA_PATH
 from tactile_data.collect_data.collect_data import collect_data
 from tactile_data.collect_data.setup_targets import setup_targets
@@ -44,11 +45,12 @@ def launch(args):
                 sensor_params
             )
 
-            # load targets to collect (select one of available)
+            # load targets to collect (select one of available); overwrite collect
             if args.input:
                 load_dir = os.path.join(INPUT_DATA_PATH, args.input, args.task, args.data_dir)
                 target_df = pd.read_csv(os.path.join(load_dir, 'targets_images.csv'))
                 target_df.to_csv(os.path.join(save_dir, "targets.csv"), index=False)
+                shutil.copy(os.path.join(load_dir, 'collect_params.json'), save_dir)               
 
             else:
                 # setup targets to collect
@@ -82,12 +84,12 @@ def process_images(args, image_params, split=None):
 if __name__ == "__main__":
 
     args = parse_args(
-        inputs=[''],
+        inputs=['ur_tactip'],
         robot='sim_ur',
         sensor='tactip',
-        tasks=['mixed_probe_shan'],
-        data_dirs=['temp'],
-        sample_nums=[10]
+        tasks=['surface_3d'],
+        data_dirs=['train_shear', 'val_shear'],
+        # sample_nums=[10]
     )
     launch(args)
 

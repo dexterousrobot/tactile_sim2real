@@ -4,7 +4,7 @@ python launch_training.py -i ur_tactip -o sim_tactip -t edge_2d -m pix2pix_128 -
 import os
 import itertools as it
 
-from tactile_data.tactile_servo_control import BASE_DATA_PATH as INPUT_DATA_PATH
+from tactile_data.tactile_sim2real import BASE_DATA_PATH as INPUT_DATA_PATH
 from tactile_data.tactile_sim2real import BASE_DATA_PATH as TARGET_DATA_PATH
 from tactile_data.tactile_sim2real import BASE_MODEL_PATH
 from tactile_learning.pix2pix.image_generator import Pix2PixImageGenerator
@@ -84,13 +84,13 @@ def launch(args):
 if __name__ == "__main__":
 
     args = parse_args(
-        inputs=['cr_tactip'],
-        targets=['sim_cr_tactip'],
-        tasks=['edge_5d'],
-        train_dirs=['train_data'],
-        val_dirs=['val_data'],
-        models=['pix2pix_64'],
-        model_version=[''],
+        inputs=['ur_tactip'],
+        targets=['sim_ur_tactip'],
+        tasks=['edge_2d'],
+        train_dirs=['train_shear'],
+        val_dirs=['val_shear'],
+        models=['pix2pix_128'],
+        model_version=['shear']
     )
 
     launch(args)
