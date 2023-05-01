@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 from tactile_data.utils import save_json_obj
 
@@ -38,44 +39,52 @@ def setup_collect_params(robot, task, save_dir=None):
     if robot.split('_')[0] == 'sim':
         robot = 'sim'
 
-    if 'surface' in task:
-        object_poses_dict = {"surface": (-50, 0, 0, 0, 0, 0)}
-    elif 'edge' in task:
-        object_poses_dict = {"edge": (0, 0, 0, 0, 0, 0)}
-
-    elif task == 'spherical_probe':
-        object_poses_dict = {
-            f"probe_{i}_{j}": (-60*i, 60*j, 0, 0, 0, 0)
-            for i in range(-1, 2) for j in range(-1, 2)
-        }
-    elif task == 'mixed_probe_shan':
-        object_poses_dict = {
-            f"probe_{i}_{j}": (-25*i, 25*j, 0, 0, 0, 0)
-            for i in range(-1, 2) for j in range(-3, 4)
-        }
-
     pose_lims_dict = {
-        'surface_3d':      [(0, 0, 1,  -25, -25,    0), (0, 0, 5, 25, 25,   0)],
-        'edge_2d':         [(-5, 0, 3,   0,   0, -180), (5, 0, 4,  0,  0, 180)],
-        'edge_3d':         [(-5, 0, 1,   0,   0, -180), (5, 0, 5,  0,  0, 180)],
-        'edge_5d':         [(-5, 0, 1, -25, -25, -180), (5, 0, 5, 25, 25, 180)],
-        'spherical_probe': [(-5, -5, 1, 0, 0, 0), (5, 5, 5, 0, 0, 0)],
-        'mixed_probe_shan': [(-5, -5, 1, 0, 0, 0), (5, 5, 5, 0, 0, 0)],
+        'surface_3d': [(0, 0, 2.5, -15, -15, 0), (0, 0, 5.5, 15, 15, 0)],
+        'edge_2d':    [(0, -6, 3, 0, 0, -180),   (0, 6, 5, 0, 0, 180)],
+        'spheres_2d': [(-12.5, -12.5, 4, 0, 0, 0), (12.5, 12.5, 5, 0, 0, 0)],
+        'mixed_2d':   [(-5, -5, 4, 0, 0, 0),       (5, 5, 5, 0, 0, 0)],
     }
 
     shear_lims_dict = {
-        'cr':      [(-5, -5, 0, 0, 0, -5), (5, 5, 0, 0, 0, 5)],
-        'mg400':   [(-5, -5, 0, 0, 0, -5), (5, 5, 0, 0, 0, 5)],
-        'sim':     [(0, 0, 0, 0, 0, 0),    (0, 0, 0, 0, 0, 0)],
+        'surface_3d': [(-5, -5, 0, -5, -5, -5), (5, 5, 0, 5, 5, 5)],
+        # 'surface_3d': [(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0)], # tap data
+        'edge_2d':    [(-5, -5, 0, -5, -5, -5), (5, 5, 0, 5, 5, 5)],
+        # 'edge_2d':   [(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0)], # tap data
+        'spheres_2d': [(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0)],
+        'mixed_2d':   [(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0)],
+    }
+    
+    sphere_names = [
+        ['2mm', '3mm', '4mm'],  ['5mm', '6mm', '7mm'], ['8mm', '9mm', '10mm'],
+    ]
+
+    mixed_names = [
+        ['cone', 'cross_lines', 'curved_surface', 'cylinder', 'cylinder_shell', 'cylinder_side', 'dot_in'], 
+        ['dots', 'flat_slab', 'hexagon', 'line', 'moon', 'pacman', 'parallel_lines'],
+        ['prism', 'random', 'sphere', 'sphere2', 'torus', 'triangle', 'wave1']
+    ]
+
+    object_poses_dict = {
+        "surface_3d": {'surface': (0, 0, 0, 0, 0, 0)},
+        "edge_2d":    {'edge':    (0, 0, 0, 0, 0, 0)},
+        "spheres_2d": {
+            sphere_names[i][j]: (60*(1-j), 60*(1-i), 0, 0, 0, -48) 
+            for i, j in np.ndindex(3, 3)
+        },
+        "mixed_2d":  {
+            mixed_names[i][j]: (25*(i-1), 25*(3-j), 0, 0, 0, 0) 
+            for i, j in np.ndindex(3, 7)
+        }
     }
 
     collect_params = {
         'pose_llims': pose_lims_dict[task][0],
         'pose_ulims': pose_lims_dict[task][1],
-        'shear_llims': shear_lims_dict[robot][0],
-        'shear_ulims': shear_lims_dict[robot][1],
-        'object_poses': object_poses_dict,
-        'sample_disk': True,
+        'shear_llims': shear_lims_dict[task][0],
+        'shear_ulims': shear_lims_dict[task][1],
+        'object_poses': object_poses_dict[task],
+        'sample_disk': False,
         'sort': False,
         'seed': 0
     }
@@ -95,40 +104,54 @@ def setup_env_params(robot, task, save_dir=None):
         robot = 'sim'
 
     # pick the correct stimuli dependent on the task
-    if 'edge' in task:
-        stim_name = 'square'
-        stim_pose = (650, 0, 12.5, 0, 0, 0)
-        workframe_pose = (650, 0, 50, -180, 0, 0)
     if 'surface' in task:
         stim_name = 'square'
-        stim_pose = (650, 0, 12.5, 0, 0, 0)
-        workframe_pose = (650, 0, 50, -180, 0, 0)
-    if 'spherical_probe' in task:
-        stim_name = 'spherical_probe'
+        stim_pose = (650, 0, 12.5, 0, 0, 0) 
+        workframe_dict = {
+            'sim': (650, 0,  50, -180, 0, 90),
+            'ur':  (0, -500, 54, -180, 0, 0)
+        }  
+        tcp_pose_dict = {
+            'sim': (0, 0, -85, 0, 0, 0),
+            'ur':  (0, 0, 101, 0, 0, 0)
+        }  
+    if 'edge' in task:
+        stim_name = 'square'
+        stim_pose = (600, 0, 12.5, 0, 0, 0) 
+        workframe_dict = {
+            'sim': (650, 0,  50, -180, 0, 90),
+            'ur':  (0, -451, 54, -180, 0, 0)
+        } 
+        tcp_pose_dict = {
+            'sim': (0, 0, -85, 0, 0, 0),
+            'ur':  (0, 0, 101, 0, 0, 0)
+        }  
+    if 'spheres' in task:
+        stim_name = 'spherical_probes'
         stim_pose = (650, 0, 0, 0, 0, 0)
-        workframe_pose = (650, 0, 42.5, -180, 0, 0)
-    if 'mixed_probe_shan' in task:
-        stim_name = 'mixed_probe_shan'
+        workframe_dict = {
+            'sim': (650, 0, 42.5, -180, 0, 90),
+            'ur': (-15.75, -462, 47.0, -180, 0, 0)
+        }
+        tcp_pose_dict = {
+            'sim': (0, 0, -85, 0, 0, 0),
+            'ur':  (0, 0, 88.5, 0, 0, 0)
+        }  
+    if 'mixed' in task:
+        stim_name = 'mixed_probes'
         stim_pose = (650, 0, 0, 0, 0, 0)
-        workframe_pose = (650, 0, 20, -180, 0, 0)
-
-    work_frame_dict = {
-        'cr':    (20, -475, 100, -180, 0, 90),
-        'mg400': (285,  0, 0, -180, 0, 0),
-        'sim':   workframe_pose,
-    }
-
-    tcp_pose_dict = {
-        'cr':    (0, 0, -70, 0, 0, 0),
-        'mg400': (0, 0, -50, 0, 0, 0),
-        'sim':   (0, 0, -85, 0, 0, 0),
-    }  # SHOULD BE ROBOT + SENSOR
+        workframe_dict = {
+            'sim': (650, 0, 20, -180, 0, 0)
+        }
+        tcp_pose_dict = {
+            'sim':   (0, 0, -85, 0, 0, 0),
+        }  
 
     env_params = {
         'robot': robot,
         'stim_name': stim_name,
         'speed': 50,
-        'work_frame': work_frame_dict[robot],
+        'work_frame': workframe_dict[robot],
         'tcp_pose': tcp_pose_dict[robot],
     }
 

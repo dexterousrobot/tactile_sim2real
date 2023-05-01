@@ -9,8 +9,8 @@ def setup_learning(save_dir=None):
     # Parameters
     learning_params = {
         'seed': 42,
-        'batch_size': 32,
-        'epochs': 100,
+        'batch_size': 64,
+        'epochs': 50,
         'n_val_batches': 10,
         'lr': 2e-4,
         'lr_factor': 0.5,
@@ -36,7 +36,7 @@ def setup_learning(save_dir=None):
 def setup_model_image(save_dir=None):
 
     image_processing_params = {
-        'dims': (64, 64),
+        'dims': (128, 128),
         'bbox': None,
         'thresh': None,
         'stdiz': False,
