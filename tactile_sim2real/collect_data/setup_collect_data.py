@@ -3,6 +3,18 @@ import numpy as np
 
 from tactile_data.utils import save_json_obj
 
+SPHERE_LABEL_NAMES = [
+    '2mm', '3mm', '4mm', 
+    '5mm', '6mm', '7mm', 
+    '8mm', '9mm', '10mm',
+]
+
+MIXED_LABEL_NAMES = [
+    'cone', 'cross_lines', 'curved_surface', 'cylinder', 'cylinder_shell', 'cylinder_side', 'dot_in', 
+    'dots', 'flat_slab', 'hexagon', 'line', 'moon', 'pacman', 'parallel_lines',
+    'prism', 'random', 'sphere', 'sphere2', 'torus', 'triangle', 'wave1'
+]
+
 
 def setup_sensor_image_params(robot, sensor, save_dir=None):
 
@@ -54,26 +66,16 @@ def setup_collect_params(robot, task, save_dir=None):
         'spheres_2d': [(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0)],
         'mixed_2d':   [(0, 0, 0, 0, 0, 0), (0, 0, 0, 0, 0, 0)],
     }
-    
-    sphere_names = [
-        ['2mm', '3mm', '4mm'],  ['5mm', '6mm', '7mm'], ['8mm', '9mm', '10mm'],
-    ]
-
-    mixed_names = [
-        ['cone', 'cross_lines', 'curved_surface', 'cylinder', 'cylinder_shell', 'cylinder_side', 'dot_in'], 
-        ['dots', 'flat_slab', 'hexagon', 'line', 'moon', 'pacman', 'parallel_lines'],
-        ['prism', 'random', 'sphere', 'sphere2', 'torus', 'triangle', 'wave1']
-    ]
 
     object_poses_dict = {
         "surface_3d": {'surface': (0, 0, 0, 0, 0, 0)},
         "edge_2d":    {'edge':    (0, 0, 0, 0, 0, 0)},
         "spheres_2d": {
-            sphere_names[i][j]: (60*(1-j), 60*(1-i), 0, 0, 0, -48) 
+            SPHERE_LABEL_NAMES[3*i+j]: (60*(1-j), 60*(1-i), 0, 0, 0, -48) 
             for i, j in np.ndindex(3, 3)
         },
         "mixed_2d":  {
-            mixed_names[i][j]: (25*(i-1), 25*(3-j), 0, 0, 0, 0) 
+            MIXED_LABEL_NAMES[7*i+j]: (25*(i-1), 25*(3-j), 0, 0, 0, 0) 
             for i, j in np.ndindex(3, 7)
         }
     }
@@ -107,7 +109,7 @@ def setup_env_params(robot, task, save_dir=None):
     if 'surface' in task:
         stim_name = 'square'
         stim_pose = (650, 0, 12.5, 0, 0, 0) 
-        workframe_dict = {
+        work_frame_dict = {
             'sim': (650, 0,  50, -180, 0, 90),
             'ur':  (0, -500, 54, -180, 0, 0)
         }  
@@ -118,7 +120,7 @@ def setup_env_params(robot, task, save_dir=None):
     if 'edge' in task:
         stim_name = 'square'
         stim_pose = (600, 0, 12.5, 0, 0, 0) 
-        workframe_dict = {
+        work_frame_dict = {
             'sim': (650, 0,  50, -180, 0, 90),
             'ur':  (0, -451, 54, -180, 0, 0)
         } 
@@ -129,7 +131,7 @@ def setup_env_params(robot, task, save_dir=None):
     if 'spheres' in task:
         stim_name = 'spherical_probes'
         stim_pose = (650, 0, 0, 0, 0, 0)
-        workframe_dict = {
+        work_frame_dict = {
             'sim': (650, 0, 42.5, -180, 0, 90),
             'ur': (-15.75, -462, 47.0, -180, 0, 0)
         }
@@ -140,18 +142,29 @@ def setup_env_params(robot, task, save_dir=None):
     if 'mixed' in task:
         stim_name = 'mixed_probes'
         stim_pose = (650, 0, 0, 0, 0, 0)
-        workframe_dict = {
+        work_frame_dict = {
             'sim': (650, 0, 20, -180, 0, 0)
         }
         tcp_pose_dict = {
             'sim':   (0, 0, -85, 0, 0, 0),
         }  
+    if 'alphabet' in task or 'arrows' in task:
+        stim_name = 'static_keyboard'
+        stim_pose = (600, 0, 0, 0, 0, 0)
+        work_frame_dict = {
+            'sim': (593, -7, 25-2, -180, 0, 0),
+            'ur':  (111, -473.5, 28.6, -180, 0, -90)
+        }
+        tcp_pose_dict = {
+            'sim':   (0, 0, -85, 0, 0, 0),
+            'ur':  (0, 0, 125, 0, 0, 0)
+        } 
 
     env_params = {
         'robot': robot,
         'stim_name': stim_name,
         'speed': 50,
-        'work_frame': workframe_dict[robot],
+        'work_frame': work_frame_dict[robot],
         'tcp_pose': tcp_pose_dict[robot],
     }
 
@@ -166,11 +179,10 @@ def setup_env_params(robot, task, save_dir=None):
 
 
 def setup_collect_data(robot, sensor, task, save_dir=None):
-    collect_params = setup_collect_params(robot, task, save_dir)
     sensor_image_params = setup_sensor_image_params(robot, sensor, save_dir)
     env_params = setup_env_params(robot, task, save_dir)
 
-    return collect_params, env_params, sensor_image_params
+    return env_params, sensor_image_params
 
 
 if __name__ == '__main__':
