@@ -1,21 +1,18 @@
 # import time
 import os
-import itertools as it
-
 import cv2
 import imageio
 import numpy as np
-
+import itertools as it
 import torch
 from torch.autograd import Variable
 
 from tactile_data.tactile_sim2real import BASE_MODEL_PATH
-from tactile_data.utils import load_json_obj
-from tactile_learning.pix2pix.models import create_model
-from tactile_learning.utils.utils_learning import seed_everything
-
+from tactile_image_processing.utils import load_json_obj
 from tactile_image_processing.image_transforms import process_image
 from tactile_image_processing.simple_sensors import RealSensor
+from tactile_learning.pix2pix.models import create_model
+from tactile_learning.utils.utils_learning import seed_everything
 
 from tactile_sim2real.utils.parse_args import parse_args
 

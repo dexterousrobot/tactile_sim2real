@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-from tactile_data.utils import save_json_obj
+from tactile_image_processing.utils import save_json_obj
 
 SPHERE_LABEL_NAMES = [
     '2mm', '3mm', '4mm', 
