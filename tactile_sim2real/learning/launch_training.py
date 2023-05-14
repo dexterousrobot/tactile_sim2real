@@ -7,10 +7,11 @@ import itertools as it
 from tactile_data.braille_classification import BASE_DATA_PATH as INPUT_DATA_PATH
 from tactile_data.tactile_sim2real import BASE_DATA_PATH as TARGET_DATA_PATH
 from tactile_data.tactile_sim2real import BASE_MODEL_PATH
+from tactile_image_processing.utils import make_dir
 from tactile_learning.pix2pix.image_generator import Pix2PixImageGenerator
 from tactile_learning.pix2pix.models import create_model
 from tactile_learning.pix2pix.train_pix2pix import train_pix2pix
-from tactile_learning.utils.utils_learning import seed_everything, make_dir
+from tactile_learning.utils.utils_learning import seed_everything
 
 from tactile_sim2real.learning.setup_training import setup_training
 from tactile_sim2real.utils.parse_args import parse_args

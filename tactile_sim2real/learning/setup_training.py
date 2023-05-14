@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from tactile_learning.utils.utils_learning import save_json_obj
+from tactile_image_processing.utils import save_json_obj
 
 
 def setup_learning(save_dir=None):

@@ -7,10 +7,10 @@ import pandas as pd
 
 from tactile_data.braille_classification import BASE_DATA_PATH as INPUT_DATA_PATH
 from tactile_data.tactile_sim2real import BASE_DATA_PATH as TARGET_DATA_PATH
-from tactile_data.collect_data.collect_data import collect_data
-from tactile_data.collect_data.setup_targets import setup_targets
-from tactile_data.collect_data.process_image_data import process_image_data, partition_data
-from tactile_data.utils import make_dir, load_json_obj, save_json_obj
+from tactile_image_processing.collect_data.collect_data import collect_data
+from tactile_image_processing.collect_data.setup_targets import setup_targets
+from tactile_image_processing.process_data.process_image_data import process_image_data, partition_data
+from tactile_image_processing.utils import make_dir, load_json_obj, save_json_obj
 
 from tactile_sim2real.collect_data.setup_collect_data import setup_collect_data, setup_collect_params
 from tactile_sim2real.utils.setup_embodiment import setup_embodiment
@@ -96,6 +96,6 @@ if __name__ == "__main__":
     launch(args)
 
     image_params = {
-        "bbox": (12, 12, 240, 240)  # sim (12, 12, 240, 240)
+        "bbox": (12, 12, 240, 240)  
     }
     process_images(args, image_params)  # , split=0.8)
